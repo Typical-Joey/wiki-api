@@ -40,6 +40,9 @@ app.route("/articles")
         const title = req.body.title;
         const content = req.body.content;
 
+        console.log(title);
+        console.log(content);
+
         const article = new Article({
             title: title,
             content: content
@@ -64,6 +67,27 @@ app.route("/articles")
             }
         });
     });
+
+
+// Handle Specific article routes
+app.route("/articles/:articleTitle")
+    // Load specific article
+    .get(function (req, res) {
+        Article.findOne({
+            title: req.params.articleTitle
+        }, function (err, article) {
+            if (!err) {
+                if (article) {
+                    res.send(article);
+                } else {
+                    res.send("No article with that title found.");
+                }
+            } else {
+                res.send(err);
+            }
+        });
+    });
+
 
 
 app.listen(process.env.PORT || 3000, function () {
