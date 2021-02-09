@@ -101,6 +101,21 @@ app.route("/articles/:articleTitle")
                 res.send(err);
             }
         })
+    })
+
+    //Update piece of specific article
+    .patch(function (req, res) {
+        Article.updateOne({
+            title: req.params.articleTitle
+        }, {
+            $set: req.body
+        }, function (err) {
+            if (!err) {
+                res.send("Successfully updated article!");
+            } else {
+                res.send(err);
+            }
+        });
     });
 
 
