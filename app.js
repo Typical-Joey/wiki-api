@@ -45,13 +45,25 @@ app.post("/articles", function (req, res) {
     });
 
     article.save(function (err) {
-        if (err) {
-            res.send(err);
-        } else {
+        if (!err) {
             res.send("Succesfully added new article!");
+        } else {
+            res.send(err);
         }
     });
 
+});
+
+
+// Delete all articles
+app.delete("/articles", function (req, res) {
+    Article.deleteMany(function (err) {
+        if (!err) {
+            res.send("Succesfully deleted all articles!");
+        } else {
+            res.send(err);
+        }
+    });
 });
 
 
