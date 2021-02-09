@@ -103,7 +103,7 @@ app.route("/articles/:articleTitle")
         })
     })
 
-    //Update piece of specific article
+    // Update piece of specific article
     .patch(function (req, res) {
         Article.updateOne({
             title: req.params.articleTitle
@@ -112,6 +112,19 @@ app.route("/articles/:articleTitle")
         }, function (err) {
             if (!err) {
                 res.send("Successfully updated article!");
+            } else {
+                res.send(err);
+            }
+        });
+    })
+
+    // Delete specific article
+    .delete(function (req, res) {
+        Article.deleteOne({
+            title: req.params.articleTitle
+        }, function (err) {
+            if (!err) {
+                res.send("Successfully deleted article!");
             } else {
                 res.send(err);
             }
