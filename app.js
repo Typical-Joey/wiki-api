@@ -20,52 +20,50 @@ const articleSchema = mongoose.Schema({
     title: String,
     content: String
 });
-
 const Article = mongoose.model("Article", articleSchema);
 
-// Find all articles in database
-app.get("/articles", function (req, res) {
-    Article.find(function (err, articles) {
-        if (!err) {
-            res.send(articles);
-        } else {
-            res.send(err);
-        }
+
+// All functionality for /articles route
+app.route("/articles")
+    // Find all articles in database
+    .get(function (req, res) {
+        Article.find(function (err, articles) {
+            if (!err) {
+                res.send(articles);
+            } else {
+                res.send(err);
+            }
+        })
     })
-});
+    // Add new articles
+    .post(function (req, res) {
+        const title = req.body.title;
+        const content = req.body.content;
 
-// Add new articles
-app.post("/articles", function (req, res) {
-    const title = req.body.title;
-    const content = req.body.content;
+        const article = new Article({
+            title: title,
+            content: content
+        });
 
-    const article = new Article({
-        title: title,
-        content: content
+        article.save(function (err) {
+            if (!err) {
+                res.send("Succesfully added new article!");
+            } else {
+                res.send(err);
+            }
+        });
+
+    })
+    // Delete all articles
+    .delete(function (req, res) {
+        Article.deleteMany(function (err) {
+            if (!err) {
+                res.send("Succesfully deleted all articles!");
+            } else {
+                res.send(err);
+            }
+        });
     });
-
-    article.save(function (err) {
-        if (!err) {
-            res.send("Succesfully added new article!");
-        } else {
-            res.send(err);
-        }
-    });
-
-});
-
-
-// Delete all articles
-app.delete("/articles", function (req, res) {
-    Article.deleteMany(function (err) {
-        if (!err) {
-            res.send("Succesfully deleted all articles!");
-        } else {
-            res.send(err);
-        }
-    });
-});
-
 
 
 app.listen(process.env.PORT || 3000, function () {
